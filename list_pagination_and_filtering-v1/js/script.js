@@ -36,10 +36,60 @@ showPage(studentLi,1);
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
+    <!-- pagination HTML to create dynamically -->
+      <div class="pagination">
+        <ul>
+          <li>
+            <a class="active" href="#">1</a>
+          </li>
+           <li>
+            <a href="#">2</a>
+          </li>
+           <li>
+            <a href="#">3</a>
+          </li>
+           <li>
+            <a href="#">4</a>
+          </li>
+           <li>
+            <a href="#">5</a>
+          </li>
+        </ul>
+      </div>
+      <!-- end pagination -->
+      
 ***/
 
+function appendPageLinks(list){
+   const div = document.createElement('div');
+   div.className = 'pagination';
+   const divPage = document.getElementsByClassName('page')[0];
+   divPage.appendChild(div);
+   const ul = document.createElement('ul');
+   div.appendChild(ul);
+   let pageLength = Math.ceil(list.length / displayLimit);
+   for (let i =0; i < pageLength; i++){
+      const li = document.createElement('li');
+      ul.appendChild(li);
+      const a = document.createElement('a');
+      a.href = '#'
+      a.textContent = i + 1;
+      a.addEventListener('click', ()=>{
+         for(let j = 0; j < ul.children.length; j++){
+            ul.children[j].firstElementChild.className = '';
+         }
+         a.className = 'active';
+         showPage(studentLi, a.textContent);
+      }) 
+      li.appendChild(a);
+   }
+   //Add the active class name to the first pagination link initially.
+   ul.firstElementChild.className = 'active';
 
+   
 
+}
 
+appendPageLinks(studentLi);
 
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
