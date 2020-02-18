@@ -31,7 +31,19 @@ function showPage(list, page){
          list[i].style.display = 'block';
       }
    }
-}
+   if (list.length == 0){
+      p.style.display = 'block';
+   } else{
+      p.style.display = 'none';
+   }
+};
+
+//Handle no results returned
+const p = document.createElement('p');
+document.getElementsByClassName('student-list')[0].appendChild(p);
+p.innerHTML = "No results";
+
+
 
 showPage(studentLi,1);
 /*** 
@@ -84,7 +96,9 @@ function appendPageLinks(list){
       li.appendChild(a);
    }
    //Add the active class name to the first pagination link initially.
-   ul.firstElementChild.className = 'active';
+   if(pageLength > 0){
+      ul.firstElementChild.className = 'active';
+   }
 }
 
 appendPageLinks(studentLi);
@@ -117,6 +131,13 @@ function createSearch(){
       appendPageLinks(searchResult);
       showPage(searchResult, 1);
    });
+  input.addEventListener('keyup', ()=>{
+      searchResult = getFilteredStudents(input.value);
+      const divPagination = document.getElementsByClassName('pagination')[0];
+      divPagination.parentNode.removeChild(divPagination);
+      appendPageLinks(searchResult);
+      showPage(searchResult, 1);
+   });
 }
 createSearch();
 
@@ -132,4 +153,6 @@ function getFilteredStudents(searchContent){
    }
    return filteredStudents;
 }
+
+
 
