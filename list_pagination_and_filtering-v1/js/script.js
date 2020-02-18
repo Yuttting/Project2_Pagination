@@ -14,7 +14,7 @@ Create a variable to store the number of items to show on each “page”, which
 
 const studentLi = document.getElementsByClassName('student-item');
 const displayLimit = 10;
-
+let searchResult = [];
 
 
 /*** 
@@ -23,11 +23,12 @@ Create a function to hide all the students except for the ten you want displayed
 function showPage(list, page){
    let startIndex = (page * displayLimit) - displayLimit;
    let endIndex = page * displayLimit;
-   for(let i = 0; i< studentLi.length; i++ ){
+   for(let i = 0; i < studentLi.length; i++ ){
+      studentLi[i].style.display = 'none';
+   }
+   for(let i = 0; i < list.length; i++ ){
       if(i >= startIndex && i < endIndex){
          list[i].style.display = 'block';
-      } else{
-         list[i].style.display = 'none';
       }
    }
 }
@@ -59,7 +60,6 @@ showPage(studentLi,1);
       <!-- end pagination -->
       
 ***/
-
 function appendPageLinks(list){
    const div = document.createElement('div');
    div.className = 'pagination';
@@ -79,17 +79,57 @@ function appendPageLinks(list){
             ul.children[j].firstElementChild.className = '';
          }
          a.className = 'active';
-         showPage(studentLi, a.textContent);
+         showPage(list, a.textContent);
       }) 
       li.appendChild(a);
    }
    //Add the active class name to the first pagination link initially.
    ul.firstElementChild.className = 'active';
-
-   
-
 }
 
 appendPageLinks(studentLi);
 
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+//Add search component
+// <!-- student search HTML to add dynamically -->
+// <div class="student-search">
+//   <input placeholder="Search for students...">
+//   <button>Search</button>
+// </div>
+// <!-- end search -->
+function createSearch(){
+   const divPageHeader = document.getElementsByClassName('page-header')[0];
+   const div = document.createElement('div');
+   div.className = 'student-search';
+   const input = document.createElement('input');
+   input.placeholder = 'Search for students...';
+   const button = document.createElement('button');
+   button.textContent = 'Search';
+   divPageHeader.appendChild(div);
+   div.appendChild(input);
+   div.appendChild(button);
+
+   //Add functionality to the search component
+   //When the "Search" button is clicked, the list is filtered by student name for those that include the search value. 
+   button.addEventListener('click', ()=>{
+      searchResult = getFilteredStudents(input.value);
+      const divPagination = document.getElementsByClassName('pagination')[0];
+      divPagination.parentNode.removeChild(divPagination);
+      appendPageLinks(searchResult);
+      showPage(searchResult, 1);
+   });
+}
+createSearch();
+
+function getFilteredStudents(searchContent){
+   if(searchContent === ''){          //when empty, return all
+      return studentLi;
+   } 
+   let filteredStudents = [];
+   for(let i =0; i< studentLi.length; i++){
+      if(studentLi[i].children[0].children[1].textContent.includes(searchContent)){
+        filteredStudents.push(studentLi[i]);
+      }
+   }
+   return filteredStudents;
+}
+
