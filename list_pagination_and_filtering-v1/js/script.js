@@ -21,8 +21,8 @@ let searchResult = [];
 Create a function to hide all the students except for the ten you want displayed on a given page.
 ***/
 function showPage(list, page){
-   let startIndex = (page * displayLimit) - displayLimit;
-   let endIndex = page * displayLimit;
+   const startIndex = (page * displayLimit) - displayLimit;
+   const endIndex = page * displayLimit;
    for(let i = 0; i < studentLi.length; i++ ){
       studentLi[i].style.display = 'none';
    }
@@ -79,7 +79,7 @@ function appendPageLinks(list){
    divPage.appendChild(div);
    const ul = document.createElement('ul');
    div.appendChild(ul);
-   let pageLength = Math.ceil(list.length / displayLimit);
+   const pageLength = Math.ceil(list.length / displayLimit);
    for (let i =0; i < pageLength; i++){
       const li = document.createElement('li');
       ul.appendChild(li);
@@ -145,9 +145,9 @@ function getFilteredStudents(searchContent){
    if(searchContent === ''){          //when empty, return all
       return studentLi;
    } 
-   let filteredStudents = [];
+   const filteredStudents = [];
    for(let i =0; i< studentLi.length; i++){
-      if(studentLi[i].children[0].children[1].textContent.includes(searchContent)){
+      if(studentLi[i].children[0].children[1].textContent.toLowerCase().includes(searchContent.toLowerCase())){
         filteredStudents.push(studentLi[i]);
       }
    }
